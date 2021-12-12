@@ -24,15 +24,11 @@ $tables = array();
 if (!$result->num_rows) {
     echo 'No Rows Returned From Pivot Query';
 } else {
-    // echo '<table>';
-    //     echo '<tr><th>Names</th></tr>';
     while ($row = mysqli_fetch_array($result)) {
         ;
         array_push($tables, $row['NAME']);
     }
 }
-
-//Exclusivas
 
 $arrayCount = count($tables);
 $charToEvaluate = '/';
@@ -44,11 +40,13 @@ for ($i = 1; $i < $arrayCount; $i++) {
     }
 }
 
-//Imprimir array entera
-foreach ($tables as $name) {
-    echo $name . "<br>";
+$final = array();
+$final = array_unique($tables);
+
+echo '<select id="desplegable">';
+
+foreach ($final as $name) {
+    echo  '<option value="' . $name . '" > ' . $name . '</option>';
 }
 
-// foreach ($tables as $name) {
-//     echo $name . "<br>";
-// }
+echo '</select>';
