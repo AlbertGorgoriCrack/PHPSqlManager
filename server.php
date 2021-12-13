@@ -66,27 +66,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $newdb = Database::getInstance();
 
         $result = $newdb->setNewQuery($textArea, $optionSelected);
-        if ($resultQuery) {
-            var_dump($resultQuery);
+        if ($result) {
+            // var_dump($result);
             $tablasReg = array();
-            while ($row = mysqli_fetch_array($resultQuery)) {
+            $tablasColumnas = array();
+            while ($row = mysqli_fetch_row($result)) {
                 array_push($tablasReg, $row);
             }
 
-            echo "<Table>";
-            foreach ($tablasReg as $registro) {
-                $arrayIndex = count($registro);
-                for ($i = 0; $i < $arrayIndex / 2; $i++) {
-                    echo "<tr></tr>";
-                    echo  '<p>' . $registro[$i] . '</p>';
-                }
+            while ($row = mysqli_fetch_assoc($result)) {
+                array_push($tablasColumnas, $row);
             }
-            echo "</Table>";
+
+            $arrayAssoc = count($tablasColumnas);
+
+            echo $arrayAssoc;
+
+            for ($i = 0; $i < $arrayAssoc; $i++) {
+                $keysArray = array_keys($tablasColumnas[$i]);
+                print_r($keysArray);
+            }
+
+            $arrayIndex = count($tablasReg);
+            for ($i = 0; $i < $arrayIndex; $i++) {
+                // array_keys($tablasReg[$i]);
+                $indexReg = count($tablasReg[$i]);
+                // echo "<br> <br> <br> <br>";
+                // $arrayColumnas = $tablasReg[$i];
+                // $keysArray = array_keys($tablasReg[$i]);
+                // print_r($arrayColumnas);
+                // print_r($keysArray);
+                // echo $keysArray[0];
+                for ($j = 0; $j < $indexReg; $j++) {
+                    echo $tablasReg[$i][$j];
+                    echo "<br>";
+                }
+                // for ($j = 0; $j < $indexReg; $j++) {
+                //     echo "<br> <br> <br>";
+                //     if ($tablasReg[$i][$j]) {
+                //         echo $tablasReg[$i][$j];
+                //     }
+                // }
+
+                echo "<br> <br> <br>";
+            }
         } else {
             echo "Error: " . $db->getConnection()->error;
         }
-    }
-
-    function displayDB(){
     }
 }
