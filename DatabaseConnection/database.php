@@ -7,7 +7,7 @@ class Database
     private $_host = "localhost";
     private $_username = "root";
     private $_password = "";
-    private $_database = "information_schema";
+    private $_database = "";
 
     /*
     Get an instance of the Database
@@ -21,15 +21,16 @@ class Database
         return self::$_instance;
     }
 
+    public function setDatabaseISc()
+    {
+        $sql = "SELECT schema_name FROM information_schema.schemata";
+        $this->_connection = new mysqli($this->_host, $this->_username, $this->_password, "information_schema");
+        return $this->_connection->query($sql);
+    }
+
     // Constructor
     private function __construct()
     {
-        $this->_connection = new mysqli($this->_host, $this->_username, $this->_password, $this->_database);
-
-    // Error handling
-        if (mysqli_connect_error()) {
-            trigger_error("Failed to conencto to MySQL: " . mysqli_connect_error(), E_USER_ERROR);
-        }
     }
 
     // Magic method clone is empty to prevent duplication of connection
@@ -40,6 +41,13 @@ class Database
     // Get mysqli connection
     public function getConnection()
     {
+
         return $this->_connection;
+    }
+
+    public function setNewQuery($queryUser, $newDB)
+    {
+        $this->_connection = new mysqli($this->_host, $this->_username, $this->_password, $newDB);
+        return $this->_connection->query($queryUser);
     }
 }

@@ -12,14 +12,11 @@
             display: inline;
             vertical-align: middle;
         }
-
     </style>
 
-    <?php include './server.php';?>
-    <?php require_once('./server.php');?>
-
-    <form method="post" action="./main.php">
-        <textarea id="textArea" name="textarea" rows="10" cols="50"></textarea>
+    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+        <?php include './server.php';?>
+        <textarea id="textarea" name="textarea" rows="10" cols="50"></textarea>
         <button value="submit" type="submit" name="submit">Enviar</button>
     </form>
 </body>
