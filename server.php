@@ -61,6 +61,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $result = $newdb->setNewQuery($textArea, $optionSelected);
 
+        $createTable = "CREATE TABLE IF NOT EXISTS SqlHistory (
+                id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                sentence VARCHAR(500) NOT NULL,
+                executed_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                )";
+
+        $newdb->setNewQuery()($createTable, $optionSelected);
+
         if ($operation === 'SELECT') {
             if ($result) {
                 // var_dump($result);
