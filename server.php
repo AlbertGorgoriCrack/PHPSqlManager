@@ -12,13 +12,6 @@ function test_input($data)
 
 $db = Database::getInstance();
 
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//     $sql = "SELECT `NAME` FROM `INNODB_SYS_TABLES`";
-// } else {
-//     $sql = false;
-// }
-
-
 $result = $db->setDatabaseISc();
 
 $tables = array();
@@ -51,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $valor1Err = 'Empty value';
     } else {
         $textArea = $_POST['textarea'];
-        echo '<br><div class="displaySearch">' . $textArea . '</div><br>';
         $valor1Err = '';
     }
 
@@ -62,64 +54,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $valor2Err = '';
     }
 
+    $operation = explode(" ", $textArea)[0];
+
     if ($valor1Err === '' && $valor2Err === '') {
         $newdb = Database::getInstance();
-        echo $optionSelected;
 
         $result = $newdb->setNewQuery($textArea, $optionSelected);
 
-        if ($result) {
-            // var_dump($result);
-            $tablasReg = array();
-            $tablasColumnas = array();
+        if ($operation === 'SELECT') {
+            if ($result) {
+                // var_dump($result);
+                $tablasReg = array();
+                $tablasColumnas = array();
 
-            while ($row = mysqli_fetch_assoc($result)) {
-                array_push($tablasReg, $row);
-            }
-            //Cabecera provisional, substituir por el array con las cabeceras
-            $titles = array();
+                while ($row = mysqli_fetch_assoc($result)) {
+                    array_push($tablasReg, $row);
+                }
+                //Cabecera provisional, substituir por el array con las cabeceras
+                $titles = array();
 
-            echo '<div class="getResult"> Se ha encontrado una coincidencia! </div>';
+                echo '<div class="getResult"> Se ha encontrado una coincidencia! </div>';
 
-            echo '<table>';
+                echo '<table>';
 
-            foreach ($tablasReg[0] as $columna => $fila) {
                 echo '<tr>';
-                echo '<th> ' . $columna . '</th>';
+                foreach ($tablasReg[0] as $columna => $fila) {
+                    echo '<th> ' . $columna . '</th>';
+                }
                 echo '</tr>';
-            }
 
-            foreach ($tablasReg as $registros) {
-                foreach ($registros as $columna => $fila) {
+                foreach ($tablasReg as $registros) {
                     echo '<tr>';
-                    echo '<td> ' . $fila . '</td>';
+                    foreach ($registros as $columna => $fila) {
+                        echo '<td> ' . $fila . '</td>';
+                    }
                     echo '</tr>';
                 }
+                echo "</table>";
+            } else {
+                echo '<div class="getBadResult">' . $db->getConnection()->error . '</div>';
             }
-
-            echo "<br>";
-
-            echo "</table>";
+        } elseif ($operation === 'UPDATE' || $operation === 'DELETE' || $operation === 'INSERT') {
+            if ($result) {
+                echo '<div class="getResult"> El ' . $operation . ' se ha producido correctamente</div>';
+            } else {
+                echo '<div class="getBadResult">' . $db->getConnection()->error . '</div>';
+            }
         } else {
-            echo "Error: " . $db->getConnection()->error;
+            echo '<div class="getBadResult"> Your query is not correct!!! </div>';
         }
     }
 }
-
-// foreach ($tablasReg as $name) {
-            //     for ($i = 1; $i <= 10; $i++) {
-            //         echo array_keys($name[$i]);
-            //     }
-            // }
-
-            // while ($secondRow = mysqli_fetch_assoc($result)) {
-            //     echo"Al fin he entrado<br>";
-            //     array_push($tablasColumnas, $secondRow);
-            // }
-
-            //https://stackoverflow.com/questions/11084445/php-mysql-get-table-headers-function
-            // $post = mysqli_fetch_assoc($result);
-            // foreach($post as $title => $value){
-            //     echo"Al fin he entrado<br>";
-            //     $tablasColumnas[] = $title;
-            // }

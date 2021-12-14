@@ -15,12 +15,12 @@
         body{
             background-color: #E9EBF2;
         }
-        textarea, button, #desplegable, .displaySearch{
+        textarea, button, #desplegable{
             display: block;
             margin: auto;
         }
 
-        button, .displaySearch, .getResult{
+        button, .getResult{
             text-align: center;
         }
 
@@ -34,8 +34,14 @@
             width: 20%;
         }
 
-        .displaySearch{
-            margin: 1em;
+        .getBadResult{
+            background-color: #FF9898;
+            color: #9D0000;
+            position: absolute;
+            top:12%;
+            padding: 1em;
+            border-radius: 1em;
+            width: 20%;
         }
 
         button{
@@ -45,7 +51,6 @@
         }
 
         table{
-            width: 80%;
             position: absolute;
             top:20%;
             text-align: center;
