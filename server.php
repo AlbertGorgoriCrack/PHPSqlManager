@@ -65,35 +65,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         //Aqui creamos la tabla SQL History si no existe
 
-        $checkQuery = "SELECT * FROM sqlhistory";
+        $checkQuery = "SELECT * FROM SqlHistory";
 
         $resultCheck = $checkHistory->setNewQuery($checkQuery, $optionSelected);
 
         if ($resultCheck) {
-            var_dump($resultCheck);
             $historial = array();
             while ($row = mysqli_fetch_assoc($resultCheck)) {
                 array_push($historial, $row);
             }
-            echo '<table>';
+            if ($historial) {
+                echo '<table>';
 
-            echo '<tr>';
-            foreach ($historial[0] as $columna => $fila) {
-                echo '<th> ' . $columna . '</th>';
-            }
-            echo '</tr>';
-
-            foreach ($historial as $registros) {
                 echo '<tr>';
-                foreach ($registros as $columna => $fila) {
-                    echo '<td> ' . $fila . '</td>';
+                foreach ($historial[0] as $columna => $fila) {
+                    echo '<th> ' . $columna . '</th>';
                 }
                 echo '</tr>';
+
+                foreach ($historial as $registros) {
+                    echo '<tr>';
+                    foreach ($registros as $columna => $fila) {
+                        echo '<td> ' . $fila . '</td>';
+                    }
+                    echo '</tr>';
+                }
+                echo "</table>";
             }
-            echo "</table>";
         } else {
             $dbCreate = Database::getInstance();
-            $createTable = "CREATE TABLE IF NOT EXISTS SqlHistory (
+            $createTable = "CREATE TABLE IF NOT EXISTS sqlhistory (
                 id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
                 sentence VARCHAR(500) NOT NULL,
                 executed_at DATETIME DEFAULT CURRENT_TIMESTAMP
