@@ -50,12 +50,13 @@
             right: 49%;
         }
 
-        table{
+        .showData{
             position: absolute;
             top:20%;
             text-align: center;
             margin: auto;
         }
+        
         #textArea{
             position: absolute;
             top:1%;
