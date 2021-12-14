@@ -64,18 +64,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($valor1Err === '' && $valor2Err === '') {
         $newdb = Database::getInstance();
+        echo $optionSelected;
 
         $result = $newdb->setNewQuery($textArea, $optionSelected);
+
         if ($result) {
             // var_dump($result);
             $tablasReg = array();
             $tablasColumnas = array();
 
-            while ($row = mysqli_fetch_row($result)) {
+            while ($row = mysqli_fetch_assoc($result)) {
                 array_push($tablasReg, $row);
             }
+            //Cabecera provisional, substituir por el array con las cabeceras
+            $titles = array();
 
-            // foreach ($tablasReg as $name) {
+            echo '<div class="getResult"> Se ha encontrado una coincidencia! </div>';
+
+            echo '<table>';
+
+            foreach ($tablasReg[0] as $columna => $fila) {
+                echo '<tr>';
+                echo '<th> ' . $columna . '</th>';
+                echo '</tr>';
+            }
+
+            foreach ($tablasReg as $registros) {
+                foreach ($registros as $columna => $fila) {
+                    echo '<tr>';
+                    echo '<td> ' . $fila . '</td>';
+                    echo '</tr>';
+                }
+            }
+
+            echo "<br>";
+
+            echo "</table>";
+        } else {
+            echo "Error: " . $db->getConnection()->error;
+        }
+    }
+}
+
+// foreach ($tablasReg as $name) {
             //     for ($i = 1; $i <= 10; $i++) {
             //         echo array_keys($name[$i]);
             //     }
@@ -92,45 +123,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             //     echo"Al fin he entrado<br>";
             //     $tablasColumnas[] = $title;
             // }
-
-            $arrayAssoc = count($tablasColumnas);
-
-            echo $arrayAssoc . '<br>';
-
-            for ($i = 0; $i < $arrayAssoc; $i++) {
-                $keysArray = array_keys($tablasColumnas[$i]);
-                print_r($keysArray);
-            }
-
-            $arrayIndex = count($tablasReg);
-
-            //Cabecera provisional, substituir por el array con las cabeceras
-            $titles = array("ID", "Sabor de helado", "Nombre", "Orientacion", "Saludo");
-
-            echo '<div class="getResult"> Se ha encontrado una coincidencia! </div>';
-
-            echo '<table>';
-
-            echo '<tr>';
-            foreach ($titles as $showTitle) {
-                echo '<th> ' . $showTitle . '</th>';
-            }
-            echo '</tr>';
-
-            for ($i = 0; $i < $arrayIndex; $i++) {
-
-                $indexReg = count($tablasReg[$i]);
-                echo '<tr>';
-                for ($j = 0; $j < $indexReg; $j++) {
-                    echo '<td> ' . $tablasReg[$i][$j] . '</td>';
-                }
-                echo "</tr><br>";
-            
-            }
-            echo "</table>";
-
-        } else {
-            echo "Error: " . $db->getConnection()->error;
-        }
-    }
-}

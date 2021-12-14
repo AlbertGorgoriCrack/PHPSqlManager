@@ -27,7 +27,8 @@
         .getResult{
             background-color: #B5FFA0;
             color: #336724;
-            margin: auto;
+            position: absolute;
+            top:12%;
             padding: 1em;
             border-radius: 1em;
             width: 20%;
@@ -37,9 +38,23 @@
             margin: 1em;
         }
 
+        button{
+            position: absolute;
+            top: 15%;
+            right: 49%;
+        }
+
         table{
+            width: 80%;
+            position: absolute;
+            top:20%;
             text-align: center;
             margin: auto;
+        }
+        #textArea{
+            position: absolute;
+            top:1%;
+            right: 10%;
         }
 
         th{
@@ -53,9 +68,10 @@
     </style>
 
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-        <textarea id="textarea" name="textarea" rows="10" cols="50"></textarea>
+        <?php include './server.php';?>
+        <textarea id="textArea" name="textarea" rows="8" cols="50"></textarea>
         <button value="submit" type="submit" name="submit">Enviar</button>
     </form>
-    <?php include './server.php';?>
+    
 </body>
 </html>
