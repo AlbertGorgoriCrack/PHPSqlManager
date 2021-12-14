@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $valor1Err = 'Empty value';
     } else {
         $textArea = $_POST['textarea'];
-        echo $textArea;
+        echo '<br><div class="displaySearch">' . $textArea . '</div><br>';
         $valor1Err = '';
     }
 
@@ -70,17 +70,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // var_dump($result);
             $tablasReg = array();
             $tablasColumnas = array();
+
             while ($row = mysqli_fetch_row($result)) {
                 array_push($tablasReg, $row);
             }
 
-            while ($row = mysqli_fetch_assoc($result)) {
-                array_push($tablasColumnas, $row);
-            }
+            // foreach ($tablasReg as $name) {
+            //     for ($i = 1; $i <= 10; $i++) {
+            //         echo array_keys($name[$i]);
+            //     }
+            // }
+
+            // while ($secondRow = mysqli_fetch_assoc($result)) {
+            //     echo"Al fin he entrado<br>";
+            //     array_push($tablasColumnas, $secondRow);
+            // }
+
+            //https://stackoverflow.com/questions/11084445/php-mysql-get-table-headers-function
+            // $post = mysqli_fetch_assoc($result);
+            // foreach($post as $title => $value){
+            //     echo"Al fin he entrado<br>";
+            //     $tablasColumnas[] = $title;
+            // }
 
             $arrayAssoc = count($tablasColumnas);
 
-            echo $arrayAssoc;
+            echo $arrayAssoc . '<br>';
 
             for ($i = 0; $i < $arrayAssoc; $i++) {
                 $keysArray = array_keys($tablasColumnas[$i]);
@@ -88,28 +103,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             $arrayIndex = count($tablasReg);
-            for ($i = 0; $i < $arrayIndex; $i++) {
-                // array_keys($tablasReg[$i]);
-                $indexReg = count($tablasReg[$i]);
-                // echo "<br> <br> <br> <br>";
-                // $arrayColumnas = $tablasReg[$i];
-                // $keysArray = array_keys($tablasReg[$i]);
-                // print_r($arrayColumnas);
-                // print_r($keysArray);
-                // echo $keysArray[0];
-                for ($j = 0; $j < $indexReg; $j++) {
-                    echo $tablasReg[$i][$j];
-                    echo "<br>";
-                }
-                // for ($j = 0; $j < $indexReg; $j++) {
-                //     echo "<br> <br> <br>";
-                //     if ($tablasReg[$i][$j]) {
-                //         echo $tablasReg[$i][$j];
-                //     }
-                // }
 
-                echo "<br> <br> <br>";
+            //Cabecera provisional, substituir por el array con las cabeceras
+            $titles = array("ID", "Sabor de helado", "Nombre", "Orientacion", "Saludo");
+
+            echo '<div class="getResult"> Se ha encontrado una coincidencia! </div>';
+
+            echo '<table>';
+
+            echo '<tr>';
+            foreach ($titles as $showTitle) {
+                echo '<th> ' . $showTitle . '</th>';
             }
+            echo '</tr>';
+
+            for ($i = 0; $i < $arrayIndex; $i++) {
+
+                $indexReg = count($tablasReg[$i]);
+                echo '<tr>';
+                for ($j = 0; $j < $indexReg; $j++) {
+                    echo '<td> ' . $tablasReg[$i][$j] . '</td>';
+                }
+                echo "</tr><br>";
+            
+            }
+            echo "</table>";
+
         } else {
             echo "Error: " . $db->getConnection()->error;
         }
