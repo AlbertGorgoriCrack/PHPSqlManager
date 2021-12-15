@@ -130,15 +130,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     echo '</tr>';
                 }
                 echo "</table>";
-                $newHistorial = "INSERT INTO sqlhistory (sentence, executed_at) VALUES ($textArea, CURRENT_TIMESTAMP)";
+                $date = date("Y-m-d H:i:s");
+                $newHistorial = "INSERT INTO sqlhistory (sentence, executed_at) 
+                VALUES ('$textArea', '$date')";
                 $resultInject = $injectHistroy->setNewQuery($newHistorial, $optionSelected);
             } else {
                 echo '<div class="getBadResult">' . $newdb->getConnection()->error . '</div>';
             }
         } elseif ($operation === 'UPDATE' || $operation === 'DELETE' || $operation === 'INSERT') {
             if ($result) {
+                $date = date("Y-m-d H:i:s");
                 echo '<div class="getResult"> El ' . $operation . ' se ha producido correctamente</div>';
-                $newHistorial = "INSERT INTO sqlhistory (sentence, executed_at) VALUES ($textArea, CURRENT_TIMESTAMP)";
+                $newHistorial = "INSERT INTO sqlhistory (sentence, executed_at) 
+                VALUES ('$textArea', '$date')";
                 $injectHistroy->setNewQuery($newHistorial, $optionSelected);
             } else {
                 echo '<div class="getBadResult">' . $newdb->getConnection()->error . '</div>';
